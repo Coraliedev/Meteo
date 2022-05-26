@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application météo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Météo</h1>
+    <form id="form">
+      <label for="ville">Entrez votre ville :</label>
+      <input
+        type="text"
+        name="ville"
+        id="ville"
+        min-length="1"
+        maxlength="163"
+      />
+      <button type="submit" id="submit-ville">Rechercher</button>
+    </form>
+
+    <section id="meteo">
+      <div id="meteoj"></div>
+      <div id="meteoj1"></div>
+      <div id="meteoj2"></div>
+      <div id="meteoj3"></div>
+      <div id="meteoj4"></div>
+      <div id="meteoj5"></div>
+    </section>
+    <script src="index.js"></script>
+  </body>
+</html>
