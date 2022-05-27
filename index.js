@@ -9,6 +9,7 @@ let meteoj2 = document.getElementById("meteoj2");
 let meteoj3 = document.getElementById("meteoj3");
 let meteoj4 = document.getElementById("meteoj4");
 let meteoj5 = document.getElementById("meteoj5");
+let meteoChildren=document.querySelectorAll("section");
 
 let listeDay = [
   "Lundi",
@@ -132,12 +133,45 @@ function recupMéteo(json) {
       };
       meteoj5.appendChild(div);
     };
-  };
+  }; ajoutRadios();
 };
+
+function ajoutRadios (){
+meteoChildren.forEach(element => {
+  let childrens = element.children.length;
+    for(let i=0;i<childrens-2;i++){
+        let radioInput = document.createElement('input');
+        radioInput.setAttribute('type', 'radio');
+        radioInput.setAttribute('name', element.id);
+        radioInput.setAttribute('carrousel', i);
+        element.appendChild(radioInput);
+    }
+    let input1 = element.querySelector("input");
+    try{
+      element.childNodes[1].className = "active";
+      input1.setAttribute('checked', 'checked');
+      element.childNodes[2].className = "active";
+    }
+    catch{
+    }
+    })
+
+    let inputs=document.querySelectorAll('input');
+    inputs.forEach(element => element.addEventListener('change',Carrousel));
+
+};
+
+function Carrousel(){
+  let parent=this.parentNode;
+  let number=parseInt(this.getAttribute('carrousel'));
+  parent.querySelectorAll("div").forEach(element=>element.className = "");
+  parent.childNodes[number+1].classList.add("active");
+  parent.childNodes[number+2].classList.add("active");
+}
 
 //reset la section méteo et les contenus crées
 function reset() {
-  let allDiv = document.querySelectorAll("div");
+  let allDiv = document.querySelectorAll("section");
   allDiv.forEach((element) => {
     element.textContent = "";
   });
