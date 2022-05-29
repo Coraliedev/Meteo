@@ -9,7 +9,7 @@ let meteoj2 = document.getElementById("meteoj2");
 let meteoj3 = document.getElementById("meteoj3");
 let meteoj4 = document.getElementById("meteoj4");
 let meteoj5 = document.getElementById("meteoj5");
-let meteoChildren=document.querySelectorAll("section");
+let meteoChildren = document.querySelectorAll("section");
 
 let listeDay = [
   "Lundi",
@@ -37,11 +37,11 @@ const apiCall = (city) => {
 function responseOk(response) {
   //console.log(response.json());
   return response.json();
-};
+}
 //réponse si erreur lors du fetch
 function responseError(error) {
   console.log(error);
-};
+}
 
 // fonction pour récupérer les données météo toutes les 3h
 function recupMéteo(json) {
@@ -73,26 +73,26 @@ function recupMéteo(json) {
     p6.textContent = `Pression : ${json.list[i].main.pressure} Pa`;
     div.appendChild(p6);
 
-    //récupère le jour du mois dans le fichier json
-    let dateMeteoJson = new Date(json.list[i].dt_txt).getDate();
-    //récupère le jour du mois actuel
-    let dateJour = new Date().getDate();
+    //récupère le timestamp des dates renvoyées par l'API météo
+    let dateMeteoJson = json.list[i].dt;
+    //récupère le timestamp du jour à 0h
+    let dateJour = new Date().setHours(0, 0, 0).valueOf() / 1000;
     // compare le jour du fichier avec le jour actuel pour placer la div selon le jour
-    if (dateMeteoJson == dateJour) {
+    if (dateMeteoJson <= dateJour + 3600 * 24) {
       if (!meteoj.hasChildNodes()) {
         let h2 = document.createElement("h2");
         h2.textContent = "Aujourd'hui";
         meteoj.appendChild(h2);
-      };
+      }
       meteoj.appendChild(div);
-    } else if (dateMeteoJson == dateJour + 1) {
+    } else if (dateMeteoJson <= dateJour + 3600 * 24 * 2) {
       if (!meteoj1.hasChildNodes()) {
         let h2 = document.createElement("h2");
         h2.textContent = "Demain";
         meteoj1.appendChild(h2);
-      };
+      }
       meteoj1.appendChild(div);
-    } else if (dateMeteoJson == dateJour + 2) {
+    } else if (dateMeteoJson <= dateJour + 3600 * 24 * 3) {
       if (!meteoj2.hasChildNodes()) {
         let h2 = document.createElement("h2");
         h2.textContent =
@@ -100,9 +100,9 @@ function recupMéteo(json) {
           " " +
           new Date(json.list[i].dt_txt).getDate();
         meteoj2.appendChild(h2);
-      };
+      }
       meteoj2.appendChild(div);
-    } else if (dateMeteoJson == dateJour + 3) {
+    } else if (dateMeteoJson <= dateJour + 3600 * 24 * 4) {
       if (!meteoj3.hasChildNodes()) {
         let h2 = document.createElement("h2");
         h2.textContent =
@@ -110,9 +110,9 @@ function recupMéteo(json) {
           " " +
           new Date(json.list[i].dt_txt).getDate();
         meteoj3.appendChild(h2);
-      };
+      }
       meteoj3.appendChild(div);
-    } else if (dateMeteoJson == dateJour + 4) {
+    } else if (dateMeteoJson <= dateJour + 3600 * 24 * 5) {
       if (!meteoj4.hasChildNodes()) {
         let h2 = document.createElement("h2");
         h2.textContent =
@@ -120,7 +120,7 @@ function recupMéteo(json) {
           " " +
           new Date(json.list[i].dt_txt).getDate();
         meteoj4.appendChild(h2);
-      };
+      }
       meteoj4.appendChild(div);
     } else {
       if (!meteoj5.hasChildNodes()) {
@@ -130,43 +130,41 @@ function recupMéteo(json) {
           " " +
           new Date(json.list[i].dt_txt).getDate();
         meteoj5.appendChild(h2);
-      };
+      }
       meteoj5.appendChild(div);
-    };
-  }; ajoutRadios();
-};
+    }
+  }
+  ajoutRadios();
+}
 
-function ajoutRadios (){
-meteoChildren.forEach(element => {
-  let childrens = element.children.length;
-    for(let i=0;i<childrens-2;i++){
-        let radioInput = document.createElement('input');
-        radioInput.setAttribute('type', 'radio');
-        radioInput.setAttribute('name', element.id);
-        radioInput.setAttribute('carrousel', i);
-        element.appendChild(radioInput);
+function ajoutRadios() {
+  meteoChildren.forEach((element) => {
+    let childrens = element.children.length;
+    for (let i = 0; i < childrens - 2; i++) {
+      let radioInput = document.createElement("input");
+      radioInput.setAttribute("type", "radio");
+      radioInput.setAttribute("name", element.id);
+      radioInput.setAttribute("carrousel", i);
+      element.appendChild(radioInput);
     }
     let input1 = element.querySelector("input");
-    try{
+    try {
       element.childNodes[1].className = "active";
-      input1.setAttribute('checked', 'checked');
+      input1.setAttribute("checked", "checked");
       element.childNodes[2].className = "active";
-    }
-    catch{
-    }
-    })
+    } catch {}
+  });
 
-    let inputs=document.querySelectorAll('input');
-    inputs.forEach(element => element.addEventListener('change',Carrousel));
+  let inputs = document.querySelectorAll("input");
+  inputs.forEach((element) => element.addEventListener("change", Carrousel));
+}
 
-};
-
-function Carrousel(){
-  let parent=this.parentNode;
-  let number=parseInt(this.getAttribute('carrousel'));
-  parent.querySelectorAll("div").forEach(element=>element.className = "");
-  parent.childNodes[number+1].classList.add("active");
-  parent.childNodes[number+2].classList.add("active");
+function Carrousel() {
+  let parent = this.parentNode;
+  let number = parseInt(this.getAttribute("carrousel"));
+  parent.querySelectorAll("div").forEach((element) => (element.className = ""));
+  parent.childNodes[number + 1].classList.add("active");
+  parent.childNodes[number + 2].classList.add("active");
 }
 
 //reset la section méteo et les contenus crées
