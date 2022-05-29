@@ -12,13 +12,13 @@ let meteoj5 = document.getElementById("meteoj5");
 let meteoChildren = document.querySelectorAll("section");
 
 let listeDay = [
+  "Dimanche",
   "Lundi",
   "Mardi",
   "Mercredi",
   "Jeudi",
   "Vendredi",
   "Samedi",
-  "Dimanche",
 ];
 
 // fonction appel API
@@ -73,6 +73,8 @@ function recupMéteo(json) {
     p6.textContent = `Pression : ${json.list[i].main.pressure} Pa`;
     div.appendChild(p6);
 
+    console.log(new Date(json.list[i].dt_txt).getDay())
+    console.log(new Date(json.list[i].dt_txt).getDate())
     //récupère le timestamp des dates renvoyées par l'API météo
     let dateMeteoJson = json.list[i].dt;
     //récupère le timestamp du jour à 0h
@@ -120,6 +122,7 @@ function recupMéteo(json) {
           " " +
           new Date(json.list[i].dt_txt).getDate();
         meteoj4.appendChild(h2);
+      
       }
       meteoj4.appendChild(div);
     } else {
