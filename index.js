@@ -134,13 +134,17 @@ function recupMéteo(json) {
       meteoj5.appendChild(div);
     }
   }
-  ajoutRadios();
+  if (window.matchMedia("(min-width:900px)").matches) {
+  ajoutRadios(2);
+  } else {
+    ajoutRadios(1);
+  }
 }
 
-function ajoutRadios() {
+function ajoutRadios(grandeLargeur) {
   meteoChildren.forEach((element) => {
     let childrens = element.children.length;
-    for (let i = 0; i < childrens - 2; i++) {
+    for (let i = 0; i < childrens - grandeLargeur; i++) {
       let radioInput = document.createElement("input");
       radioInput.setAttribute("type", "radio");
       radioInput.setAttribute("name", element.id);
@@ -151,20 +155,26 @@ function ajoutRadios() {
     try {
       element.childNodes[1].className = "active";
       input1.setAttribute("checked", "checked");
+      if(grandeLargeur==2){
       element.childNodes[2].className = "active";
+      }
     } catch {}
   });
-
   let inputs = document.querySelectorAll("input");
-  inputs.forEach((element) => element.addEventListener("change", Carrousel));
-}
+  if(grandeLargeur==2){
+  inputs.forEach((element) => element.addEventListener("change", carrousel));
+} else {
+  inputs.forEach((element) => element.addEventListener("change", carrousel));
+}}
 
-function Carrousel() {
+function carrousel() {
   let parent = this.parentNode;
   let number = parseInt(this.getAttribute("carrousel"));
   parent.querySelectorAll("div").forEach((element) => (element.className = ""));
   parent.childNodes[number + 1].classList.add("active");
+  if (window.matchMedia("(min-width:900px)").matches) {
   parent.childNodes[number + 2].classList.add("active");
+  }
 }
 
 //reset la section méteo et les contenus crées
